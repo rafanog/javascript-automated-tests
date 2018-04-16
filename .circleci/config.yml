@@ -95,15 +95,15 @@ workflows:
       - 01-login:
           requires:
             - checkout
-      - 02-user-profile:
-          requires:
-            - checkout
-      - 03-calling-an-api:
-          requires:
-            - checkout
-      - 04-authorization:
-          requires:
-            - checkout
-      - 05-token-renewal:
-          requires:
-            - checkout
+      #- 02-user-profile:
+      #    requires:
+      #      - checkout
+      #- 03-calling-an-api:
+      #    requires:
+      #      - checkout
+      #- 04-authorization:
+      #    requires:
+      #      - checkout
+      #- 05-token-renewal:
+      #    requires:
+      #      - checkout
