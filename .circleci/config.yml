@@ -11,10 +11,10 @@ defaults: &defaults
       - run:
           name: Replace Auth0 test credentials
           command: |
-            echo "AUTH0_DOMAIN=$AUTH0_TEST_DOMAIN" >> .env
-            echo "AUTH_CLIENT_ID=$AUTH0_TEST_CLIENT_ID" >> .env
-            echo "AUTH0_CALLBACK_URL=location.href" >> .env
-    
+            mv $AUTH0_CFG.example $AUTH0_CFG
+            sed -i 's/{CLIENT_ID}/'$AUTH0_TEST_CLIENT_ID'/g' $AUTH0_CFG
+            sed -i 's/{DOMAIN}/'$AUTH0_TEST_DOMAIN'/g' $AUTH0_CFG
+            sed -i 's/{API_IDENTIFIER}/'$AUTH0_TEST_API_IDENTIFIER'/g' $AUTH0_CFG
       - run:
           name: Build pull request
           command: |
@@ -59,7 +59,7 @@ jobs:
   01-login:
     machine: true
     environment:
-      - AUTH0_CFG: 01-Login/auth0-variables.js
+      - AUTH0_CFG: 01-Login/src/app/auth/auth0-variables.ts
       - SAMPLE_PATH: 01-Login
     <<: *defaults
   02-user-profile:
@@ -91,19 +91,25 @@ workflows:
   version: 2
   quickstarts_login:
     jobs:
-      - checkout
+      - checkout:
+          context: Quickstart SPA Test
       - 01-login:
+          context: Quickstart SPA Test
           requires:
             - checkout
-      #- 02-user-profile:
-      #    requires:
-      #      - checkout
-      #- 03-calling-an-api:
-      #    requires:
-      #      - checkout
-      #- 04-authorization:
-      #    requires:
-      #      - checkout
-      #- 05-token-renewal:
-      #    requires:
-      #      - checkout
+      - 02-user-profile:
+          context: Quickstart SPA Test
+          requires:
+            - checkout
+      - 03-calling-an-api:
+          context: Quickstart SPA Test
+          requires:
+            - checkout
+      - 04-authorization:
+          context: Quickstart SPA Test
+          requires:
+            - checkout
+      - 05-token-renewal:
+          context: Quickstart SPA Test
+          requires:
+            - checkout
