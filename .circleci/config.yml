@@ -65,7 +65,7 @@ jobs:
   02-user-profile:
     machine: true
     environment:
-      - AUTH0_CFG: 02-User-Profile/src/app/auth/auth0-variables.ts
+      - AUTH0_CFG: 02-User-Profile/auth0-variables.js
       - SAMPLE_PATH: 02-User-Profile
     <<: *defaults
   03-calling-an-api:
